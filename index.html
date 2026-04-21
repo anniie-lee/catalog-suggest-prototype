@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catalog Suggest — Variant 1</title>
+<title>Catalog Suggest — Sohara Feedback v2</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,8 +17,8 @@
 
   .page-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #444; }
   .page-title { font-size: 18px; font-weight: 700; color: #fff; }
+  .page-sub { font-size: 12px; color: #555; text-align: center; line-height: 1.6; max-width: 340px; }
 
-  /* ── Phone ── */
   .phone {
     width: 340px; height: 700px; background: #fff; border-radius: 44px;
     overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,0.07), 0 32px 80px rgba(0,0,0,0.8);
@@ -29,135 +29,132 @@
     width: 100px; height: 28px; background: #fff; border-radius: 0 0 18px 18px; z-index: 40;
   }
 
-  /* System UI */
-  .sbar { flex-shrink: 0; background: #fff; padding: 14px 22px 4px; display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: #000; z-index: 5; position: relative; }
-  .tnav { flex-shrink: 0; background: #fff; padding: 8px 18px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; z-index: 5; position: relative; }
+  .sbar { flex-shrink: 0; background: #fff; padding: 14px 22px 4px; display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: #000; position: relative; z-index: 5; }
+  .tnav { flex-shrink: 0; background: #fff; padding: 8px 18px 10px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0; position: relative; z-index: 5; }
   .nav-back { font-size: 22px; color: #222; cursor: pointer; }
   .nav-title { font-size: 14px; font-weight: 600; color: #111; }
   .nav-skip { font-size: 12px; color: #e53935; font-weight: 500; cursor: pointer; }
   .prog { flex-shrink: 0; height: 3px; background: #f0f0f0; }
   .prog-fill { height: 3px; background: #e53935; transition: width 0.4s ease; }
 
-  /* ── Screens ── */
   .screens { flex: 1; position: relative; overflow: hidden; }
   .screen {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
     background: #fff;
   }
   .screen.active { transform: translateX(0); }
   .screen.prev   { transform: translateX(-30%); }
 
-  /* ── Shared ── */
   .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .scroll-area::-webkit-scrollbar { display: none; }
 
+  /* Product area */
   .prod-area {
-    flex-shrink: 0; height: 100px; background: #fff;
-    display: flex; align-items: center; justify-content: center; padding: 12px 0 8px;
+    flex-shrink: 0; height: 88px; background: #fff;
+    display: flex; align-items: center; justify-content: center; padding: 10px 0 6px;
   }
   .prod-thumb {
-    width: 60px; height: 60px; background: #e4e4e4; border-radius: 12px;
+    width: 56px; height: 56px; background: #e4e4e4; border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
   }
 
-  /* ── Screen 1: Category ── */
-  .cat-section { padding: 20px 18px; }
-  .sec-title { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 16px; }
-  .cat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  /* Screen 1: Category */
+  .cat-section { padding: 16px 18px; }
+  .sec-title { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 14px; }
+  .cat-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
   .cat-chip {
     font-size: 13px; padding: 7px 16px; border-radius: 100px;
     border: 1.5px solid #e0e0e0; color: #555; background: #fff;
     cursor: pointer; transition: all 0.15s;
   }
   .cat-chip.on { border-color: #6699ff; background: #eef3ff; color: #3366cc; font-weight: 600; }
-  .other-link { font-size: 12px; color: #888; cursor: pointer; padding: 4px 0; }
+  .other-link { font-size: 12px; color: #aaa; cursor: pointer; }
 
-  /* ── Screen 2–5: Catalog ── */
-  .cat-header { padding: 16px 18px 12px; }
-  .cat-h1 { font-size: 18px; font-weight: 700; color: #111; display: flex; align-items: center; gap: 8px; }
+  /* Screen 2: Catalog */
+  .cat-header { padding: 14px 18px 10px; }
+  .cat-h1 { font-size: 17px; font-weight: 700; color: #111; display: flex; align-items: center; gap: 8px; }
   .mini-spinner {
-    width: 14px; height: 14px; border: 2px solid #eee; border-top-color: #e53935;
+    width: 13px; height: 13px; border: 2px solid #eee; border-top-color: #e53935;
     border-radius: 50%; animation: spin 0.7s linear infinite; display: none;
   }
   .mini-spinner.show { display: block; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Grid */
   .cat-grid { padding: 0 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .item-card {
     border: 1.5px solid #f0f0f0; border-radius: 14px; overflow: hidden;
     background: #f8f8f8; cursor: pointer;
-    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s, transform 0.1s;
   }
+  .item-card:active { transform: scale(0.97); }
   .item-card.sel { border-color: #3366cc; background: #f0f4ff; box-shadow: 0 0 0 3px rgba(51,102,204,0.1); }
   .item-card.sel .card-img-area { background: #dce7ff; }
   .card-img-area {
-    height: 100px; background: #eee;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
+    height: 96px; background: #eee;
+    display: flex; align-items: center; justify-content: center; transition: background 0.15s;
   }
-  .card-ph { width: 38px; height: 52px; background: #d0d0d0; border-radius: 4px; }
+  .card-ph { width: 36px; height: 50px; background: #d0d0d0; border-radius: 4px; }
   .card-ph-b { background: #b8c8e8; }
-  .item-card.sel .card-ph { background: #99b3dd; }
   .card-body { padding: 8px 10px 10px; }
   .card-name { font-size: 11px; font-weight: 600; color: #222; line-height: 1.4; }
   .card-sub  { font-size: 10px; color: #bbb; margin-top: 2px; }
   .none-slot {
-    border: 1.5px dashed #e0e0e0; border-radius: 14px; min-height: 130px;
+    border: 1.5px dashed #e0e0e0; border-radius: 14px; min-height: 124px;
     display: flex; align-items: center; justify-content: center;
     background: #fafafa; cursor: pointer; transition: all 0.15s;
   }
-  .none-slot.sel { border-color: #3366cc; }
   .none-slot span { font-size: 11px; color: #ccc; }
 
   /* Skeleton */
-  .skel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 18px; }
+  .skel { padding: 0 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .skel-card { border: 1.5px solid #f0f0f0; border-radius: 14px; overflow: hidden; }
-  .skel-img { height: 100px; }
+  .skel-img { height: 96px; }
   .skel-body { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 6px; }
   .skel-line { height: 9px; border-radius: 5px; }
-  .skel-a {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
-    background-size: 200%; animation: sh 1.3s infinite;
-  }
+  .skel-a { background: linear-gradient(90deg,#f0f0f0 25%,#e8e8e8 50%,#f0f0f0 75%); background-size:200%; animation:sh 1.3s infinite; }
   @keyframes sh { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
 
   @keyframes cardIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-  .item-card.appear,.none-slot.appear { animation: cardIn 0.28s ease both; }
+  .item-card.appear,.none-slot.appear { animation:cardIn 0.25s ease both; }
 
-  /* ── Condition bar ── */
+  /* ── Condition bar (always visible after load) ── */
   .cond-bar {
     flex-shrink: 0; border-top: 1px solid #f0f0f0;
-    padding: 12px 18px 10px; background: #fff;
+    padding: 10px 18px 8px; background: #fff; cursor: pointer;
+    display: none;
   }
-  .cond-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .cond-label { font-size: 11px; font-weight: 600; color: #aaa; }
-  .cond-change { font-size: 11px; font-weight: 600; color: #3366cc; cursor: pointer; display: none; }
+  .cond-bar-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 7px; }
+  .cond-bar-label { font-size: 11px; font-weight: 600; color: #aaa; }
+  .cond-bar-edit { font-size: 11px; font-weight: 600; color: #3366cc; display: none; }
 
-  .cond-add {
-    display: flex; align-items: center; gap: 7px; cursor: pointer; padding: 2px 0;
+  /* Default: example chips (lighter, hint style) */
+  .cond-examples { display: flex; flex-wrap: wrap; gap: 5px; }
+  .example-chip {
+    font-size: 11px; padding: 4px 10px; border-radius: 100px;
+    border: 1.5px dashed #d8d8d8; color: #ccc; background: #fafafa;
+    pointer-events: none; user-select: none;
   }
-  .cond-add-icon {
-    width: 22px; height: 22px; border-radius: 50%;
-    border: 1.5px solid #e0e0e0; background: #f8f8f8;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; color: #bbb; transition: all 0.15s; flex-shrink: 0;
-  }
-  .cond-add:hover .cond-add-icon { border-color: #3366cc; color: #3366cc; background: #eef3ff; }
-  .cond-add-text { font-size: 12px; color: #bbb; }
-  .cond-add:hover .cond-add-text { color: #3366cc; }
+  .example-more { font-size: 11px; color: #ccc; align-self: center; padding-left: 2px; pointer-events: none; }
 
-  .cond-chips-row { display: none; flex-wrap: wrap; gap: 6px; }
+  /* Selected chips */
+  .cond-chips { display: none; flex-wrap: wrap; gap: 5px; }
   .cond-chip-tag {
     font-size: 11px; font-weight: 500; padding: 4px 11px; border-radius: 100px;
-    background: #f0f0f0; border: 1.5px solid #e4e4e4; color: #666;
+    background: #eef3ff; border: 1.5px solid #aac0f0; color: #3366cc;
   }
 
-  /* ── CTA ── */
-  .cta-wrap { flex-shrink: 0; padding: 10px 18px 22px; background: #fff; }
+  /* Home indicator */
+  .home-indicator {
+    flex-shrink: 0; height: 34px; background: #fff;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .home-bar {
+    width: 134px; height: 5px; background: #111; border-radius: 3px; opacity: 0.18;
+  }
+
+  /* CTA */
+  .cta-wrap { flex-shrink: 0; padding: 8px 18px 10px; background: #fff; }
   .cta {
     width: 100%; padding: 14px; background: #e53935; color: #fff;
     border: none; border-radius: 12px; font-size: 14px; font-weight: 700;
@@ -165,27 +162,38 @@
   }
   .cta:disabled { opacity: 0.2; cursor: not-allowed; }
 
+  /* Screen 3: Next step */
+  .next-screen {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 32px; gap: 12px; text-align: center;
+  }
+  .next-icon { font-size: 40px; margin-bottom: 4px; }
+  .next-title { font-size: 17px; font-weight: 700; color: #111; }
+  .next-sub { font-size: 13px; color: #aaa; line-height: 1.6; }
+
   /* ── Bottom Sheet ── */
   .overlay {
     position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 20;
     pointer-events: none; transition: background 0.3s; border-radius: 44px;
   }
-  .overlay.show { background: rgba(0,0,0,0.3); pointer-events: auto; }
+  .overlay.show { background: rgba(0,0,0,0.25); pointer-events: auto; }
 
   .sheet {
     position: absolute; bottom: 0; left: 0; right: 0; z-index: 30;
     background: #fff; border-radius: 20px 20px 0 0;
     transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-    padding-bottom: 24px; max-height: 68%; display: flex; flex-direction: column;
+    padding-bottom: 24px; max-height: 70%; display: flex; flex-direction: column;
   }
   .sheet.open { transform: translateY(0); }
   .sheet-handle { width: 36px; height: 4px; background: #e0e0e0; border-radius: 2px; position: absolute; top: 8px; left: 50%; transform: translateX(-50%); }
   .sheet-head {
-    flex-shrink: 0; padding: 18px 18px 12px;
+    flex-shrink: 0; padding: 18px 18px 10px;
     display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0f0f0;
   }
   .sheet-title { font-size: 14px; font-weight: 700; color: #111; }
   .sheet-x { font-size: 18px; color: #bbb; cursor: pointer; }
+  .sheet-updating { font-size: 11px; color: #e53935; display: none; }
+  .sheet-updating.show { display: block; }
 
   .sheet-body { flex: 1; overflow-y: auto; padding: 14px 18px 0; }
   .sheet-body::-webkit-scrollbar { display: none; }
@@ -200,14 +208,6 @@
   }
   .s-chip.on { background: #eef3ff; border-color: #6699ff; color: #3366cc; font-weight: 600; }
 
-  .sheet-foot { flex-shrink: 0; padding: 12px 18px 0; }
-  .sheet-cta {
-    width: 100%; padding: 14px; background: #e53935; color: #fff;
-    border: none; border-radius: 12px; font-size: 14px; font-weight: 700;
-    cursor: pointer; font-family: inherit; transition: opacity 0.2s;
-  }
-  .sheet-cta:disabled { opacity: 0.25; cursor: not-allowed; }
-
   /* hint */
   .hint {
     font-size: 12px; color: #333; text-align: center; line-height: 1.7;
@@ -219,8 +219,8 @@
 </head>
 <body>
 
-<div class="page-label">Variant 1 — Full Flow</div>
-<div class="page-title">カテゴリ選択 → Catalog → 絞り込み → 選択</div>
+<div class="page-label">Sohara Feedback — v2</div>
+<div class="page-title">Example chips · Auto-update · Tap to proceed</div>
 
 <div class="phone">
   <div class="sbar"><span>9:41</span><span>▲ ● ■</span></div>
@@ -233,13 +233,9 @@
 
   <div class="screens" id="screens">
 
-    <!-- ── Screen 1: Category ── -->
+    <!-- Screen 1: Category -->
     <div class="screen active" id="s1">
-      <div class="prod-area">
-        <div class="prod-thumb">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c0c0c0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </div>
-      </div>
+      <div class="prod-area"><div class="prod-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c0c0c0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
       <div class="scroll-area">
         <div class="cat-section">
           <div class="sec-title">こちらのカテゴリーですか？</div>
@@ -251,28 +247,18 @@
           <div class="other-link">他のカテゴリーを選択する →</div>
         </div>
       </div>
-      <div class="cta-wrap">
-        <button class="cta" id="s1Cta" disabled>次へ</button>
-      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
     </div>
 
-    <!-- ── Screen 2–5: Catalog ── -->
+    <!-- Screen 2: Catalog -->
     <div class="screen" id="s2">
-      <div class="prod-area">
-        <div class="prod-thumb">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c0c0c0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </div>
-      </div>
+      <div class="prod-area"><div class="prod-thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c0c0c0" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div></div>
 
       <div class="scroll-area">
         <div class="cat-header">
-          <div class="cat-h1" id="catH1">
-            こちらの商品ですか？
-            <div class="mini-spinner" id="spinner"></div>
-          </div>
+          <div class="cat-h1">こちらの商品ですか？<div class="mini-spinner" id="spinner"></div></div>
         </div>
 
-        <!-- Skeleton -->
         <div id="skel" class="skel">
           <div class="skel-card"><div class="skel-img skel-a"></div><div class="skel-body"><div class="skel-line skel-a" style="width:85%"></div><div class="skel-line skel-a" style="width:60%"></div></div></div>
           <div class="skel-card"><div class="skel-img skel-a"></div><div class="skel-body"><div class="skel-line skel-a" style="width:80%"></div><div class="skel-line skel-a" style="width:55%"></div></div></div>
@@ -280,67 +266,52 @@
           <div class="skel-card"><div class="skel-img skel-a"></div><div class="skel-body"><div class="skel-line skel-a" style="width:75%"></div><div class="skel-line skel-a" style="width:45%"></div></div></div>
         </div>
 
-        <!-- Results (state A: initial) -->
+        <!-- Grid A: initial results -->
         <div id="gridA" class="cat-grid" style="display:none">
-          <div class="item-card" data-card>
-            <div class="card-img-area"><div class="card-ph"></div></div>
-            <div class="card-body"><div class="card-name">ピカチュウ ポケモンカードフェスタ 2017…</div><div class="card-sub">シングルカード</div></div>
-          </div>
-          <div class="item-card" data-card>
-            <div class="card-img-area"><div class="card-ph"></div></div>
-            <div class="card-body"><div class="card-name">あったかピカチュウ プロモ（097/XY-P）</div><div class="card-sub">シングルカード</div></div>
-          </div>
-          <div class="item-card" data-card>
-            <div class="card-img-area"><div class="card-ph"></div></div>
-            <div class="card-body"><div class="card-name">ピカチュウ SM-P 061</div><div class="card-sub">シングルカード</div></div>
-          </div>
+          <div class="item-card" data-card><div class="card-img-area"><div class="card-ph"></div></div><div class="card-body"><div class="card-name">ピカチュウ ポケモンカードフェスタ 2017…</div><div class="card-sub">シングルカード</div></div></div>
+          <div class="item-card" data-card><div class="card-img-area"><div class="card-ph"></div></div><div class="card-body"><div class="card-name">あったかピカチュウ プロモ（097/XY-P）</div><div class="card-sub">シングルカード</div></div></div>
+          <div class="item-card" data-card><div class="card-img-area"><div class="card-ph"></div></div><div class="card-body"><div class="card-name">ピカチュウ SM-P 061</div><div class="card-sub">シングルカード</div></div></div>
           <div class="none-slot" id="noneA"><span>同じ商品がない</span></div>
         </div>
 
-        <!-- Results (state B: after refine) -->
+        <!-- Grid B: refined results -->
         <div id="gridB" class="cat-grid" style="display:none">
-          <div class="item-card" data-card>
-            <div class="card-img-area"><div class="card-ph card-ph-b"></div></div>
-            <div class="card-body"><div class="card-name">ポケモンカード151 sv2a 強化拡張パック…</div><div class="card-sub">シングルカード</div></div>
-          </div>
-          <div class="item-card" data-card>
-            <div class="card-img-area"><div class="card-ph card-ph-b"></div></div>
-            <div class="card-body"><div class="card-name">ポケモンカード151 sv2a 強化拡張パック…</div><div class="card-sub">シングルカード</div></div>
-          </div>
-          <div class="item-card" data-card>
-            <div class="card-img-area"><div class="card-ph card-ph-b"></div></div>
-            <div class="card-body"><div class="card-name">ポケモンカード151 sv2a 強化拡張パック…</div><div class="card-sub">シングルカード</div></div>
-          </div>
+          <div class="item-card" data-card><div class="card-img-area"><div class="card-ph card-ph-b"></div></div><div class="card-body"><div class="card-name">ポケモンカード151 sv2a 強化拡張パック…</div><div class="card-sub">シングルカード</div></div></div>
+          <div class="item-card" data-card><div class="card-img-area"><div class="card-ph card-ph-b"></div></div><div class="card-body"><div class="card-name">ポケモンカード151 sv2a 強化拡張パック…</div><div class="card-sub">シングルカード</div></div></div>
+          <div class="item-card" data-card><div class="card-img-area"><div class="card-ph card-ph-b"></div></div><div class="card-body"><div class="card-name">ポケモンカード151 sv2a 強化拡張パック…</div><div class="card-sub">シングルカード</div></div></div>
           <div class="none-slot" id="noneB"><span>同じ商品がない</span></div>
         </div>
       </div>
 
-      <!-- Condition bar -->
-      <div class="cond-bar">
-        <div class="cond-row">
-          <div class="cond-label">選択した条件</div>
-          <div class="cond-change" id="condChange">変更</div>
+      <!-- Condition bar: tap to open sheet -->
+      <div class="cond-bar" id="condBar">
+        <div class="cond-bar-row">
+          <div class="cond-bar-label">選択した条件</div>
+          <div class="cond-bar-edit" id="condEdit">変更</div>
         </div>
-        <div class="cond-add" id="condAdd">
-          <div class="cond-add-icon">＋</div>
-          <div class="cond-add-text">条件を追加して絞り込む</div>
+        <!-- Default: example chips (hint) -->
+        <div class="cond-examples" id="condExamples">
+          <div class="example-chip">プロモカード</div>
+          <div class="example-chip">店舗限定</div>
+          <div class="example-chip">ホロ仕様</div>
+          <div class="example-more">+もっと見る</div>
         </div>
-        <div class="cond-chips-row" id="condChipsRow"></div>
+        <!-- Selected chips -->
+        <div class="cond-chips" id="condChips"></div>
       </div>
 
-      <div class="cta-wrap">
-        <button class="cta" id="s2Cta" disabled>次へ</button>
-      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
 
-      <!-- Overlay -->
+      <!-- Overlay + Sheet -->
       <div class="overlay" id="overlay"></div>
-
-      <!-- Bottom Sheet -->
       <div class="sheet" id="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-head">
           <div class="sheet-title">条件で絞り込む</div>
-          <div class="sheet-x" id="sheetX">✕</div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div class="sheet-updating" id="sheetUpdating">更新中...</div>
+            <div class="sheet-x" id="sheetX">✕</div>
+          </div>
         </div>
         <div class="sheet-body">
           <div class="sg">
@@ -368,174 +339,159 @@
             </div>
           </div>
         </div>
-        <div class="sheet-foot">
-          <button class="sheet-cta" id="sheetCta" disabled>この条件で再検索</button>
-        </div>
+        <!-- No confirm button -->
       </div>
     </div>
 
-  </div><!-- /screens -->
+    <!-- Screen 3: Next step (after card selected) -->
+    <div class="screen" id="s3" style="justify-content:space-between;">
+      <div class="next-screen">
+        <div class="next-icon">✅</div>
+        <div class="next-title">商品が選択されました</div>
+        <div class="next-sub">AI出品が商品情報を<br>自動で入力します</div>
+      </div>
+      <div class="home-indicator"><div class="home-bar"></div></div>
+    </div>
+
+  </div>
 </div>
 
 <div class="hint">
-  💡 <strong>Screen 1</strong>: カテゴリを選ぶ → 次へ &nbsp;|&nbsp; <strong>Screen 2</strong>: catalog を選ぶ or 「条件を追加」→ sheet &nbsp;|&nbsp; <strong>Sheet</strong>: chips 選択 → 再検索
+  💡 <strong>S2 条件バー</strong>: dashed chips でヒント表示、tap で sheet 開く<br>
+  <strong>Sheet</strong>: chip 選択で自動 debounce → catalog 更新（ボタンなし）<br>
+  <strong>カード選択</strong>: tap で即次画面へ
 </div>
 
 <script>
-  // ── State ──
   let currentScreen = 1;
-  let selectedChips = [];
-  let gridState = 'A'; // A = initial, B = refined
+  let gridState = 'A';
+  let debounceTimer = null;
 
-  const s1 = document.getElementById('s1');
-  const s2 = document.getElementById('s2');
-  const progFill   = document.getElementById('progFill');
-  const spinner    = document.getElementById('spinner');
-  const catH1      = document.getElementById('catH1');
-  const skel       = document.getElementById('skel');
-  const gridA      = document.getElementById('gridA');
-  const gridB      = document.getElementById('gridB');
-  const noneA      = document.getElementById('noneA');
-  const noneB      = document.getElementById('noneB');
-  const condAdd    = document.getElementById('condAdd');
-  const condChange = document.getElementById('condChange');
-  const condChipsRow = document.getElementById('condChipsRow');
-  const overlay    = document.getElementById('overlay');
-  const sheet      = document.getElementById('sheet');
-  const sheetX     = document.getElementById('sheetX');
-  const sheetCta   = document.getElementById('sheetCta');
-  const s1Cta      = document.getElementById('s1Cta');
-  const s2Cta      = document.getElementById('s2Cta');
-  const navBack    = document.getElementById('navBack');
+  const progFill = document.getElementById('progFill');
+  const spinner = document.getElementById('spinner');
+  const skel = document.getElementById('skel');
+  const gridA = document.getElementById('gridA');
+  const gridB = document.getElementById('gridB');
+  const noneA = document.getElementById('noneA');
+  const noneB = document.getElementById('noneB');
+  const condBar = document.getElementById('condBar');
+  const condExamples = document.getElementById('condExamples');
+  const condChips = document.getElementById('condChips');
+  const condEdit = document.getElementById('condEdit');
+  const overlay = document.getElementById('overlay');
+  const sheet = document.getElementById('sheet');
+  const sheetX = document.getElementById('sheetX');
+  const sheetUpdating = document.getElementById('sheetUpdating');
+  const s1Cta = document.getElementById('s1Cta');
 
-  // ── Navigation ──
-  function goTo(screen) {
-    if (screen === 2) {
-      s1.classList.remove('active'); s1.classList.add('prev');
-      s2.classList.add('active');    s2.classList.remove('prev');
-      progFill.style.width = '65%';
-      currentScreen = 2;
-      // Start loading
-      startCatalogLoad();
-    } else {
-      s2.classList.remove('active'); s2.classList.remove('prev');
-      s1.classList.add('active');    s1.classList.remove('prev');
-      progFill.style.width = '40%';
-      currentScreen = 1;
-    }
+  const screens = { 1: document.getElementById('s1'), 2: document.getElementById('s2'), 3: document.getElementById('s3') };
+
+  function goTo(n) {
+    screens[currentScreen].classList.remove('active');
+    screens[currentScreen].classList.add('prev');
+    screens[n].classList.add('active');
+    screens[n].classList.remove('prev');
+    progFill.style.width = n === 1 ? '40%' : n === 2 ? '65%' : '100%';
+    currentScreen = n;
+    if (n === 2) startCatalogLoad();
   }
 
-  navBack.addEventListener('click', () => {
-    if (currentScreen === 2) goTo(1);
+  document.getElementById('navBack').addEventListener('click', () => {
+    if (currentScreen > 1) {
+      screens[currentScreen].classList.remove('active');
+      screens[currentScreen - 1].classList.remove('prev');
+      screens[currentScreen - 1].classList.add('active');
+      progFill.style.width = currentScreen === 2 ? '40%' : '65%';
+      currentScreen--;
+    }
   });
 
-  // ── Screen 1: Category ──
-  document.querySelectorAll('[data-cat]').forEach(chip => {
-    chip.addEventListener('click', () => {
-      document.querySelectorAll('[data-cat]').forEach(c => c.classList.remove('on'));
-      chip.classList.add('on');
-      s1Cta.disabled = false;
+  // Screen 1: tap category → immediately go to Screen 2
+  document.querySelectorAll('[data-cat]').forEach(c => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('[data-cat]').forEach(x => x.classList.remove('on'));
+      c.classList.add('on');
+      setTimeout(() => goTo(2), 150);
     });
   });
 
-  s1Cta.addEventListener('click', () => goTo(2));
-
-  // ── Catalog load ──
+  // Catalog load
   function startCatalogLoad() {
-    skel.style.display = 'grid';
-    gridA.style.display = 'none';
-    gridB.style.display = 'none';
-    spinner.classList.add('show');
-    catH1.childNodes[0].textContent = '候補を読み込み中...';
-    s2Cta.disabled = true;
-    // deselect
+    skel.style.display = 'grid'; gridA.style.display = 'none'; gridB.style.display = 'none';
+    spinner.classList.add('show'); condBar.style.display = 'none';
     document.querySelectorAll('[data-card]').forEach(c => c.classList.remove('sel'));
-    noneA.classList.remove('sel'); noneB.classList.remove('sel');
-    setTimeout(() => {
-      skel.style.display = 'none';
-      spinner.classList.remove('show');
-      catH1.childNodes[0].textContent = 'こちらの商品ですか？';
-      const grid = gridState === 'A' ? gridA : gridB;
-      grid.style.display = 'grid';
-      grid.querySelectorAll('.item-card, .none-slot').forEach((c, i) => {
-        c.classList.remove('appear');
-        void c.offsetWidth;
-        c.style.animationDelay = (i * 0.07) + 's';
-        c.classList.add('appear');
-      });
-    }, 900);
+    setTimeout(() => showGrid(false), 900);
   }
 
-  // ── Sheet ──
-  function openSheet() {
-    sheet.classList.add('open');
-    overlay.classList.add('show');
-  }
-  function closeSheet() {
-    sheet.classList.remove('open');
-    overlay.classList.remove('show');
+  function showGrid(isRefresh) {
+    skel.style.display = 'none';
+    spinner.classList.remove('show');
+    sheetUpdating.classList.remove('show');
+    if (!isRefresh) condBar.style.display = 'block';
+    const grid = gridState === 'A' ? gridA : gridB;
+    const other = gridState === 'A' ? gridB : gridA;
+    other.style.display = 'none';
+    grid.style.display = 'grid';
+    grid.querySelectorAll('.item-card,.none-slot').forEach((c, i) => {
+      c.classList.remove('appear'); void c.offsetWidth;
+      c.style.animationDelay = (i * 0.07) + 's';
+      c.classList.add('appear');
+    });
   }
 
-  condAdd.addEventListener('click', openSheet);
-  condChange.addEventListener('click', openSheet);
+  // Sheet
+  function openSheet() { sheet.classList.add('open'); overlay.classList.add('show'); }
+  function closeSheet() { sheet.classList.remove('open'); overlay.classList.remove('show'); }
+
+  condBar.addEventListener('click', openSheet);
   sheetX.addEventListener('click', closeSheet);
   overlay.addEventListener('click', closeSheet);
 
+  // Chips: auto-update (no confirm button)
   document.querySelectorAll('[data-chip]').forEach(chip => {
     chip.addEventListener('click', () => {
       chip.classList.toggle('on');
-      sheetCta.disabled = document.querySelectorAll('[data-chip].on').length === 0;
+      const selected = [...document.querySelectorAll('[data-chip].on')].map(c => c.textContent);
+
+      // Update condition bar preview
+      if (selected.length > 0) {
+        condExamples.style.display = 'none';
+        condEdit.style.display = 'block';
+        condChips.style.display = 'flex';
+        condChips.innerHTML = selected.map(t => `<div class="cond-chip-tag">${t}</div>`).join('');
+      } else {
+        condExamples.style.display = 'flex';
+        condEdit.style.display = 'none';
+        condChips.style.display = 'none';
+      }
+
+      // Auto-debounce update: close sheet → catalog updates visibly
+      clearTimeout(debounceTimer);
+      sheetUpdating.classList.add('show');
+      gridState = selected.length > 0 ? 'B' : 'A';
+      document.querySelectorAll('[data-card]').forEach(c => c.classList.remove('sel'));
+      debounceTimer = setTimeout(() => {
+        // Close sheet so catalog is visible during update
+        closeSheet();
+        skel.style.display = 'grid';
+        gridA.style.display = 'none'; gridB.style.display = 'none';
+        spinner.classList.add('show');
+        setTimeout(() => showGrid(true), 700);
+      }, 800);
     });
   });
 
-  sheetCta.addEventListener('click', () => {
-    selectedChips = [...document.querySelectorAll('[data-chip].on')].map(c => c.textContent);
-    // Update condition bar
-    condAdd.style.display = 'none';
-    condChange.style.display = 'block';
-    condChipsRow.style.display = 'flex';
-    condChipsRow.innerHTML = selectedChips.map(t => `<div class="cond-chip-tag">${t}</div>`).join('');
-    // Reload catalog
-    gridState = 'B';
-    closeSheet();
-    skel.style.display = 'grid';
-    gridA.style.display = 'none'; gridB.style.display = 'none';
-    spinner.classList.add('show');
-    catH1.childNodes[0].textContent = '候補を更新中...';
-    s2Cta.disabled = true;
-    document.querySelectorAll('[data-card]').forEach(c => c.classList.remove('sel'));
-    noneA.classList.remove('sel'); noneB.classList.remove('sel');
-    setTimeout(() => {
-      skel.style.display = 'none';
-      spinner.classList.remove('show');
-      catH1.childNodes[0].textContent = 'こちらの商品ですか？';
-      gridB.style.display = 'grid';
-      gridB.querySelectorAll('.item-card, .none-slot').forEach((c, i) => {
-        c.classList.remove('appear');
-        void c.offsetWidth;
-        c.style.animationDelay = (i * 0.07) + 's';
-        c.classList.add('appear');
-      });
-    }, 900);
-  });
-
-  // ── Card selection ──
-  function handleCardSelect(card, noneSlot) {
-    document.querySelectorAll('[data-card]').forEach(c => c.classList.remove('sel'));
-    noneA.classList.remove('sel'); noneB.classList.remove('sel');
-    if (card) { card.classList.add('sel'); s2Cta.disabled = false; }
-    else if (noneSlot) { noneSlot.classList.add('sel'); s2Cta.disabled = false; }
-  }
-
-  gridA.addEventListener('click', e => {
-    const card = e.target.closest('[data-card]');
-    if (card) { handleCardSelect(card, null); return; }
-    if (e.target.closest('#noneA')) handleCardSelect(null, noneA);
-  });
-  gridB.addEventListener('click', e => {
-    const card = e.target.closest('[data-card]');
-    if (card) { handleCardSelect(card, null); return; }
-    if (e.target.closest('#noneB')) handleCardSelect(null, noneB);
+  // Card selection → immediate next screen
+  [gridA, gridB].forEach(grid => {
+    grid.addEventListener('click', e => {
+      const card = e.target.closest('[data-card]');
+      const none = e.target.closest('.none-slot');
+      if (card || none) {
+        if (card) { document.querySelectorAll('[data-card]').forEach(c => c.classList.remove('sel')); card.classList.add('sel'); }
+        closeSheet();
+        setTimeout(() => goTo(3), 200);
+      }
+    });
   });
 </script>
 </body>
